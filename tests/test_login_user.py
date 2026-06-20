@@ -10,12 +10,16 @@ class Testlogin:
 
     @allure.description('Успешная авторизация существующего пользователя')
     @allure.title('Авторизация существующего пользователя')
-    def test_login_user(self):
-        response = requests.post(f'{Urls.MAIN_URL}{Handlers.LOGIN}', data=User.data_correct)
-        assert response.status_code == 200 and response.json().get('success') == True
+    def test_login_user(self, create_user):
+        login_data = create_user[2]
+        response = requests.post(f'{Urls.MAIN_URL}{Handlers.LOGIN}', data=login_data)
+        assert response.status_code == 200 and response.json().get('success') is True
 
     @allure.description('Авторизация пользователя с некорректным логином/паролем возникает ответ 401')
     @allure.title('Авторизация с некорректным логином/паролем')
     def test_login_user_error(self):
-        response = requests.post(f'{Urls.MAIN_URL}{Handlers.LOGIN}', data=User.data_negative)
-        assert response.status_code == 401 and response.json().get('success') == False
+        payload = User.create_data_user()
+        login_data = payload.copy()
+        login_data['password'] = 'wrong_password'
+        response = requests.post(f'{Urls.MAIN_URL}{Handlers.LOGIN}', data=login_data)
+        assert response.status_code == 401 and response.json().get('success') is False
