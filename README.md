@@ -16,6 +16,6 @@ tests/ - папка с тестами
 conftest - файл с фикстурами
 requirements.txt - файл с зависимостями
 
-Для запуска тестов из директории tests необходимо выполнить команду: pytest tests --alluredir=allure_results
+Для запуска тестов из директории tests необходимо выполнить команду: pytest --alluredir=allure_results
 
 Посмотреть отчет выполненных тестов: allure serve allure_results
